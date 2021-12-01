@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from issue_tracking.views import UserAPIView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('issue_tracking', include('issue_tracking.urls')),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/user/', UserAPIView.as_view()),
 ]
