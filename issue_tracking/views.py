@@ -17,8 +17,19 @@ class UserAPIView(APIView):
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+
+        # Get user by id
+        try:
+            id = request.query_params["id"]
+            if id != None:
+                user = User.objects.get(user_id=id)
+                serializer = UserSerializer(user)
+
+        # Get all users
+        except:
+            users = User.objects.all()
+            serializer = UserSerializer(users, many=True)
+
         return Response(serializer.data)
 
 
@@ -39,6 +50,9 @@ class UserAPIView(APIView):
 
         return Response(serializer.data)
 
+
+    def delete(self, request, *args, **kwargs):
+        pass
 
 class ProjectAPIView(APIView):
     pass

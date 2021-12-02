@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('issue_tracking', include('issue_tracking.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/user/', UserAPIView.as_view()),
+    #path('api/user/', UserAPIView.as_view()),
+    path('api/', include('issue_tracking.urls')),
 ]
