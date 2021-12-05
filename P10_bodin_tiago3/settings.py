@@ -32,8 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "issue_tracking.apps.IssueTrackingConfig",
-    #'issue_tracking'
-    
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +72,6 @@ TEMPLATES = [
     },
 ]
 
-#AUTH_USER_MODEL = "issue_tracking.User"
 
 WSGI_APPLICATION = 'P10_bodin_tiago3.wsgi.application'
 
@@ -87,6 +86,8 @@ DATABASES = {
     }
 }
 
+# Overwrite default user model
+AUTH_USER_MODEL = "issue_tracking.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -106,7 +107,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#REST_FRAMEWORK = []
+REST_FRAMEWORK = {
+    #'DEFAULT_AUTHENTICATION_CLASSES': [
+    #    'rest_framework.authentication.BasicAuthentication',
+    #    'rest_framework.authentication.SessionAuthentication',
+    #]
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',)
+}
+
+# Redirect to a page after login
+LOGIN_REDIRECT_URL = '/api/user/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

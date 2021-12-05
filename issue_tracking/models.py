@@ -1,17 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
 
-class User(models.Model):
-    user_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=200)
-    password = models.CharField(max_length=50)
+class User(AbstractUser):
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.email}'
 
 
 class Project(models.Model):
@@ -23,8 +19,14 @@ class Project(models.Model):
 
 
 class Contributor(models.Model):
-    user_id = models.ManyToManyField(User)
+    CHOICES = (
+        (1, 'Add_Contributor + Remove_Contributor'),
+        (2, 'Add_Contributor'),
+        (3, 'No special permission'),
+    )
+    user_id = models.IntegerField()
     project_id = models.IntegerField()
+    permission = models.IntegerField(choices=CHOICES, default=3)
     role = models.CharField(max_length=150)
 
 
@@ -33,7 +35,7 @@ class Issue(models.Model):
     desc = models.CharField(max_length=150)
     tag = models.CharField(max_length=150)
     priority = models.CharField(max_length=150)
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project_id = models.IntegerField()
     status = models.CharField(max_length=150)
     author_user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author_issue")
     assignee_user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assignee_issue")
